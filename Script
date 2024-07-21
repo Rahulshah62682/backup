@@ -1,0 +1,22 @@
+#!/bin/bash
+
+# Configuration
+SOURCE_DIR="/path/to/source_directory"        # Directory to backup
+REMOTE_USER="username"                        # Remote server username
+REMOTE_HOST="remote.server.com"               # Remote server address
+REMOTE_DIR="/path/to/remote_directory"        # Directory on remote server
+LOG_FILE="/path/to/backup_log.txt"            # Log file location
+DATE=$(date +"%Y-%m-%d_%H-%M-%S")
+
+# Start backup
+echo "Starting backup: $DATE" >> "$LOG_FILE"
+rsync -avz --delete "$SOURCE_DIR" "$REMOTE_USER@$REMOTE_HOST:$REMOTE_DIR" >> "$LOG_FILE" 2>&1
+
+# Check exit status of rsync command
+if [ $? -eq 0 ]; then
+    echo "Backup successful: $DATE" >> "$LOG_FILE"
+else
+    echo "Backup failed: $DATE" >> "$LOG_FILE"
+fi
+
+
